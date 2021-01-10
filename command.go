@@ -59,7 +59,9 @@ func (c *Command) Trigger(ctx *Ctx) {
 		}
 	}
 
+	// Prepare all middlewares
 	nextHandler := c.Handler
 
+	// Run all middlewares
 	nextHandler(ctx)
 }
