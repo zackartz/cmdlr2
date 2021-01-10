@@ -63,7 +63,7 @@ func (r *Router) Initialize(client *disgord.Client) {
 	client.Gateway().MessageCreate(r.Handler(client))
 }
 
-func (r *Router) Handler(c *disgord.Client) (disgord.HandlerMessageCreate, disgord.HandlerMessageCreate) {
+func (r *Router) Handler(c *disgord.Client) disgord.HandlerMessageCreate {
 	return func(s disgord.Session, h *disgord.MessageCreate) {
 		msg := h.Message
 		content := h.Message.Content
@@ -128,5 +128,5 @@ func (r *Router) Handler(c *disgord.Client) (disgord.HandlerMessageCreate, disgo
 			}
 		}
 
-	}, nil
+	}
 }
