@@ -12,6 +12,7 @@ type Router struct {
 	IgnorePrefixCase bool
 	BotsAllowed      bool
 	Commands         []*Command
+	Client           *disgord.Client
 	Middlewares      []Middleware
 	PingHandler      ExecutionHandler
 	Storage          map[string]*ObjectsMap
@@ -77,7 +78,7 @@ func (r *Router) Handler(c *disgord.Client) (disgord.HandlerMessageCreate, disgo
 			r.PingHandler(&Ctx{
 				Session: &s,
 				Event:   h,
-				Client:  c,
+				Client:  r.Client,
 				Args:    ParseArguments(""),
 				Router:  r,
 			})
