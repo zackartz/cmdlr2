@@ -118,6 +118,7 @@ func (r *Router) Handler(c *disgord.Client) (disgord.HandlerMessageCreate, disgo
 				ctx := &Ctx{
 					Session: &s,
 					Event:   h,
+					Client:  c,
 					Args:    ParseArguments(content),
 					Router:  r,
 					Command: cmd,
