@@ -12,52 +12,52 @@ import (
 func (r *Router) RegisterDefaultHelpCommand(c *disgord.Client) {
 	r.InitializeStorage("hdl_helpMessages")
 
-	c.Gateway().MessageReactionAdd(func(s disgord.Session, h *disgord.MessageReactionAdd) {
-		channelID := h.ChannelID
-		messageID := h.MessageID
-		userID := h.UserID
-		u, _ := c.Cache().GetCurrentUser()
-
-		if userID == u.ID {
-			return
-		}
-
-		rawPage, ok := r.Storage["hdl_helpMessages"].Get(fmt.Sprintf("%v:%v:%v", channelID, messageID, userID))
-		if !ok {
-			return
-		}
-
-		page := rawPage.(int)
-		if page <= 0 {
-			return
-		}
-
-		reactionName := h.PartialEmoji.Name
-		switch reactionName {
-		case "⬅":
-			embed, newPage := renderDefaultGeneralHelpEmbed(r, page-1)
-			page = newPage
-			b := c.Channel(channelID).Message(messageID).Update()
-			b.SetEmbed(embed)
-
-			q := c.Channel(channelID).Message(messageID).Reaction(reactionName)
-			_ = q.DeleteUser(userID)
-			break
-		case "❌":
-			_ = c.Channel(channelID).Message(messageID).Delete()
-			break
-		case "➡":
-			embed, newPage := renderDefaultGeneralHelpEmbed(r, page+1)
-			page = newPage
-			b := c.Channel(channelID).Message(messageID).Update()
-			b.SetEmbed(embed)
-
-			q := c.Channel(channelID).Message(messageID).Reaction(reactionName)
-			_ = q.DeleteUser(userID)
-		}
-
-		r.Storage["hdl_helpMessages"].Set(fmt.Sprintf("%v:%v:%v", channelID, messageID, userID), page)
-	})
+	//c.Gateway().MessageReactionAdd(func(s disgord.Session, h *disgord.MessageReactionAdd) {
+	//	channelID := h.ChannelID
+	//	messageID := h.MessageID
+	//	userID := h.UserID
+	//	u, _ := c.Cache().GetCurrentUser()
+	//
+	//	if userID == u.ID {
+	//		return
+	//	}
+	//
+	//	rawPage, ok := r.Storage["hdl_helpMessages"].Get(fmt.Sprintf("%v:%v:%v", channelID, messageID, userID))
+	//	if !ok {
+	//		return
+	//	}
+	//
+	//	page := rawPage.(int)
+	//	if page <= 0 {
+	//		return
+	//	}
+	//
+	//	reactionName := h.PartialEmoji.Name
+	//	switch reactionName {
+	//	case "⬅":
+	//		embed, newPage := renderDefaultGeneralHelpEmbed(r, page-1)
+	//		page = newPage
+	//		b := c.Channel(channelID).Message(messageID).Update()
+	//		b.SetEmbed(embed)
+	//
+	//		q := c.Channel(channelID).Message(messageID).Reaction(reactionName)
+	//		_ = q.DeleteUser(userID)
+	//		break
+	//	case "❌":
+	//		_ = c.Channel(channelID).Message(messageID).Delete()
+	//		break
+	//	case "➡":
+	//		embed, newPage := renderDefaultGeneralHelpEmbed(r, page+1)
+	//		page = newPage
+	//		b := c.Channel(channelID).Message(messageID).Update()
+	//		b.SetEmbed(embed)
+	//
+	//		q := c.Channel(channelID).Message(messageID).Reaction(reactionName)
+	//		_ = q.DeleteUser(userID)
+	//	}
+	//
+	//	r.Storage["hdl_helpMessages"].Set(fmt.Sprintf("%v:%v:%v", channelID, messageID, userID), page)
+	//})
 
 	r.RegisterCMD(&Command{
 		Name:        "help",
