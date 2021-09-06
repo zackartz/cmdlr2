@@ -2,11 +2,12 @@ package cmdlr2
 
 import (
 	"fmt"
-	"github.com/andersfylling/disgord"
 	"math"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/andersfylling/disgord"
 )
 
 func (r *Router) RegisterDefaultHelpCommand(c *disgord.Client) {
@@ -37,7 +38,7 @@ func (r *Router) RegisterDefaultHelpCommand(c *disgord.Client) {
 		case "⬅":
 			embed, newPage := renderDefaultGeneralHelpEmbed(r, page-1)
 			page = newPage
-			b := c.Channel(channelID).Message(messageID).Update()
+			b := c.Channel(channelID).Message(messageID)
 			b.SetEmbed(embed)
 
 			q := c.Channel(channelID).Message(messageID).Reaction(reactionName)
@@ -49,7 +50,7 @@ func (r *Router) RegisterDefaultHelpCommand(c *disgord.Client) {
 		case "➡":
 			embed, newPage := renderDefaultGeneralHelpEmbed(r, page+1)
 			page = newPage
-			b := c.Channel(channelID).Message(messageID).Update()
+			b := c.Channel(channelID).Message(messageID)
 			b.SetEmbed(embed)
 
 			q := c.Channel(channelID).Message(messageID).Reaction(reactionName)
